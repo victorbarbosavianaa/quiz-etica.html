@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Quiz de Inteligência Artificial</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#f2f2f2;
+text-align:center;
+padding:40px;
+}
+
+.container{
+background:white;
+padding:30px;
+border-radius:10px;
+max-width:700px;
+margin:auto;
+box-shadow:0 0 10px rgba(0,0,0,0.2);
+}
+
+button{
+display:block;
+margin:10px auto;
+padding:10px;
+width:80%;
+border:none;
+border-radius:5px;
+background:#3498db;
+color:white;
+font-size:16px;
+cursor:pointer;
+}
+
+button:hover{
+background:#2980b9;
+}
+
+#feedback{
+font-size:20px;
+font-weight:bold;
+margin-top:20px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Quiz sobre Inteligência Artificial</h1>
+
+<h2 id="pergunta"></h2>
+
+<div id="respostas"></div>
+
+<p id="feedback"></p>
+
+</div>
+
+<script>
+
+const perguntas = [
+
+{pergunta:"1. O que significa IA?", respostas:["Internet Avançada","Inteligência Artificial","Informação Automática","Interface Analógica"], correta:1},
+
+{pergunta:"2. IA utiliza principalmente:", respostas:["Dados","Tintas","Papéis","Lápis"], correta:0},
+
+{pergunta:"3. IA pode ajudar na:", respostas:["Medicina","Agricultura","Indústria","Todas as alternativas"], correta:3},
+
+{pergunta:"4. Machine Learning significa:", respostas:["Aprendizado de máquina","Aprendizado humano","Rede social","Programa de TV"], correta:0},
+
+{pergunta:"5. IA pode analisar:", respostas:["Dados","Imagens","Voz","Todas as alternativas"], correta:3},
+
+{pergunta:"6. IA pode automatizar:", respostas:["Tarefas repetitivas","Planetas","Energia solar","Clima"], correta:0},
+
+{pergunta:"7. Um desafio da IA é:", respostas:["Questões éticas","Velocidade da internet","Energia elétrica","Teclados"], correta:0},
+
+{pergunta:"8. IA ajuda empresas a:", respostas:["Tomar decisões","Apagar dados","Quebrar computadores","Desligar internet"], correta:0},
+
+{pergunta:"9. IA depende de:", respostas:["Algoritmos","Dados","Programação","Todas as alternativas"], correta:3},
+
+{pergunta:"10. IA pode reconhecer:", respostas:["Imagens","Voz","Texto","Todas as alternativas"], correta:3},
+
+{pergunta:"11. IA pode transformar:", respostas:["Economia","Sociedade","Ciência","Todas as alternativas"], correta:3},
+
+{pergunta:"12. IA é usada em:", respostas:["Carros autônomos","Assistentes virtuais","Recomendação de filmes","Todas as alternativas"], correta:3},
+
+{pergunta:"13. IA pode ajudar na pesquisa:", respostas:["Científica","Musical","Teatral","Esportiva"], correta:0},
+
+{pergunta:"14. IA pode melhorar:", respostas:["Produtividade","Eficiência","Automação","Todas as alternativas"], correta:3},
+
+{pergunta:"15. IA utiliza:", respostas:["Grandes volumes de dados","Somente papel","Somente tinta","Somente teclado"], correta:0},
+
+{pergunta:"16. IA pode prever:", respostas:["Tendências","Resultados","Padrões","Todas as alternativas"], correta:3},
+
+{pergunta:"17. IA pode aprender com:", respostas:["Dados","Experiências","Treinamento","Todas as alternativas"], correta:3},
+
+{pergunta:"18. IA faz parte da área de:", respostas:["Computação","Biologia","Química","Geografia"], correta:0},
+
+{pergunta:"19. IA pode ajudar na:", respostas:["Segurança","Saúde","Educação","Todas as alternativas"], correta:3},
+
+{pergunta:"20. IA é considerada:", respostas:["Tecnologia de propósito geral","Tecnologia antiga","Tecnologia simples","Tecnologia inútil"], correta:0}
+
+]
+
+let perguntaAtual = 0
+let pontuacao = 0
+
+function mostrarPergunta(){
+
+let p = perguntas[perguntaAtual]
+
+document.getElementById("pergunta").innerText = p.pergunta
+
+let respostasHTML = ""
+
+p.respostas.forEach((r,i)=>{
+
+respostasHTML += `<button onclick="responder(${i})">${r}</button>`
+
+})
+
+document.getElementById("respostas").innerHTML = respostasHTML
+
+document.getElementById("feedback").innerText = ""
+
+}
+
+function responder(index){
+
+let correta = perguntas[perguntaAtual].correta
+
+if(index === correta){
+
+pontuacao++
+document.getElementById("feedback").innerText = "✅ Você acertou!"
+
+}else{
+
+document.getElementById("feedback").innerText = "❌ Você errou!"
+
+}
+
+setTimeout(()=>{
+
+perguntaAtual++
+
+if(perguntaAtual < perguntas.length){
+
+mostrarPergunta()
+
+}else{
+
+mostrarResultado()
+
+}
+
+},1000)
+
+}
+
+function mostrarResultado(){
+
+document.getElementById("pergunta").innerText = "Quiz finalizado!"
+
+document.getElementById("respostas").innerHTML = ""
+
+document.getElementById("feedback").innerText = "Pontuação: " + pontuacao + " de " + perguntas.length
+
+}
+
+mostrarPergunta()
+
+</script>
+
+</body>
+</html>
