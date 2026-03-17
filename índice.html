@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Quiz de Inteligência Artificial</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#f2f2f2;
+text-align:center;
+padding:40px;
+}
+
+.container{
+background:white;
+padding:30px;
+border-radius:10px;
+max-width:700px;
+margin:auto;
+box-shadow:0 0 10px rgba(0,0,0,0.2);
+}
+
+button{
+display:block;
+margin:10px auto;
+padding:10px;
+width:80%;
+border:none;
+border-radius:5px;
+background:#3498db;
+color:white;
+font-size:16px;
+cursor:pointer;
+}
+
+button:hover{
+background:#2980b9;
+}
+
+#feedback{
+font-size:20px;
+font-weight:bold;
+margin-top:20px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Quiz sobre Inteligência Artificial</h1>
+
+<h2 id="pergunta"></h2>
+
+<div id="respostas"></div>
+
+<p id="feedback"></p>
+
+</div>
+
+<script>
+
+const perguntas = [
+
+{pergunta:"1. Segundo Arbix, por que a IA atual é comparada a uma “constelação de tecnologias de propósito geral (TPG)”?", respostas:['Porque é usada apenas em setores de alta tecnologia.','Porque se limita a tarefas muito específicas e isoladas.','Porque se aplica a muitos setores, gera outras inovações e potencializa P&D.','Porque depende exclusivamente de redes neurais profundas.'], correta:2},
+
+{pergunta:"2. O artigo destaca que as tecnologias não operam no vácuo. Isso significa que:", respostas:['A tecnologia é neutra e independe de contextos sociais.','A tecnologia determina sozinha o rumo da história.','A tecnologia é um artefato social, influenciado por política, poder e desigualdades.','A tecnologia é apenas um fenômeno econômico, sem implicações éticas.'], correta:2},
+
+{pergunta:"3. No texto, a IA é tratada principalmente como:", respostas:['Um novo “Frankenstein” incontrolável.','Mais uma tecnologia qualquer, igual às do passado.','Uma poderosa força transformadora, com impactos inéditos em ética.','Um simples recurso de automação de tarefas manuais.'], correta:2},
+
+{pergunta:"4. Sobre a distinção entre narrow/weak AI e strong/general AI, o artigo afirma que:", respostas:['A strong AI já é amplamente usada em smartphones.','A narrow AI resolve tarefas específicas com alta precisão, mas sem consciência.','A narrow AI possui emoções, enquanto a strong AI não.','A strong AI é apenas um nome antigo para machine learning.'], correta:1},
+
+{pergunta:"5. Por que muitos algoritmos de deep learning são chamados de “caixa‑preta” (black box)?", respostas:['Porque o código‑fonte é sempre secreto.','Porque executam apenas operações simples e previsíveis.','Porque é difícil explicar como chegam às conclusões, dado seu alto grau de complexidade.','Porque não utilizam dados para aprendizagem.'], correta:2},
+
+{pergunta:"6. No artigo, a relação entre autonomia dos algoritmos e responsabilidade dos designers é descrita como:", respostas:['Quanto maior a autonomia da IA, menor a responsabilidade de seus criadores.','A autonomia torna impossível responsabilizar alguém.','A responsabilidade é sempre do usuário final, não do programador.','Quanto maior a autonomia da IA, maior a responsabilidade de seus criadores.'], correta:3},
+
+{pergunta:"7. Um dos problemas éticos centrais apontados por Arbix é o viés (bias) nos dados. Isso ocorre quando:", respostas:['Os dados são sempre aleatórios e imprevisíveis.','As amostras de treinamento não representam adequadamente a população.','Os algoritmos não usam nenhum tipo de estatística.','Os dados são escolhidos somente por critérios técnicos neutros.'], correta:1},
+
+{pergunta:"8. A noção de “explicabilidade” (explainability) no contexto do artigo refere‑se principalmente a:", respostas:['Capacidade da IA de se autoprogramar sem supervisão.','Tornar rastreáveis e compreensíveis os processos de decisão dos algoritmos.','Aumentar apenas a velocidade de processamento dos sistemas.','Eliminar completamente a necessidade de regulação.'], correta:1},
+
+{pergunta:"9. Segundo o texto, o Regulamento Geral de Proteção de Dados da União Europeia (GDPR):", respostas:['Ignora o uso de IA em decisões automatizadas.','Proíbe qualquer uso de dados pessoais para treinar algoritmos.','Garante ao usuário o direito de pedir informações sobre a lógica de decisões algorítmicas.','Permite decisões automatizadas, mas sem qualquer obrigação de transparência.'], correta:2},
+
+{pergunta:"10. Entre os princípios éticos de alto nível mapeados em diretrizes internacionais sobre IA, o artigo menciona:", respostas:['Transparência, justiça e equidade, não‑maleficência, responsabilidade e privacidade.','Neutralidade absoluta da tecnologia e maximização do lucro.','Supremacia dos algoritmos sobre leis humanas.','Substituição completa de órgãos reguladores por Conselhos de Ética privados.'], correta:0},
+
+{pergunta:"11. Ao discutir o papel de empresas e universidades na construção de uma IA ética, Arbix defende que:", respostas:['Comitês de ética são dispensáveis se a tecnologia for avançada.','Projetos de IA não precisam ser avaliados sob critérios éticos.','Comités legitimados devem poder acompanhar e até interromper projetos que violem princípios éticos.','Apenas governos devem decidir, sem participação de pesquisadores ou sociedade civil.'], correta:2},
+
+{pergunta:"12. A Declaração de Toronto, citada no artigo, é apresentada como referência internacional porque:", respostas:['Rejeita qualquer tipo de regulação da IA.','Foca na proteção do direito à igualdade e não discriminação em sistemas de machine learning.','Defende o uso irrestrito de dados sensíveis para treinar algoritmos.','Considera irrelevante o impacto da IA sobre direitos humanos.'], correta:1},
+
+]
+
+let perguntaAtual = 0
+let pontuacao = 0
+
+function mostrarPergunta(){
+
+let p = perguntas[perguntaAtual]
+
+document.getElementById("pergunta").innerText = p.pergunta
+
+let respostasHTML = ""
+
+p.respostas.forEach((r,i)=>{
+
+respostasHTML += `<button onclick="responder(${i})">${r}</button>`
+
+})
+
+document.getElementById("respostas").innerHTML = respostasHTML
+
+document.getElementById("feedback").innerText = ""
+
+}
+
+function responder(index){
+
+let correta = perguntas[perguntaAtual].correta
+
+if(index === correta){
+
+pontuacao++
+document.getElementById("feedback").innerText = "✅ Você acertou!"
+
+}else{
+
+document.getElementById("feedback").innerText = "❌ Você errou!"
+
+}
+
+setTimeout(()=>{
+
+perguntaAtual++
+
+if(perguntaAtual < perguntas.length){
+
+mostrarPergunta()
+
+}else{
+
+mostrarResultado()
+
+}
+
+},1000)
+
+}
+
+function mostrarResultado(){
+
+document.getElementById("pergunta").innerText = "Quiz finalizado!"
+
+document.getElementById("respostas").innerHTML = ""
+
+document.getElementById("feedback").innerText = "Pontuação: " + pontuacao + " de " + perguntas.length
+
+}
+
+mostrarPergunta()
+
+</script>
+
+</body>
+</html>
